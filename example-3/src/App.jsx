@@ -1,25 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
+import "./index.css";
 
 function App() {
-  /* You will need to use many state to keep the inut values and other needs */
+  // States to track input values and result
+  const [a, setA] = useState("");
+  const [b, setB] = useState("");
+  const [result, setResult] = useState("");
+  const [error, setError] = useState(false);
 
-  /* You will need some function to handle the key pressed and button events */
+  // Function to check if input is a valid number
+  function isValidNumber(value) {
+    return !isNaN(value) && value.trim() !== "";
+  }
+
+  // Handle input changes
+  function handleAChange(event) {
+    setA(event.target.value);
+  }
+
+  function handleBChange(event) {
+    setB(event.target.value);
+  }
+
+  // Compute sum or show error
+  function computeSum() {
+    if (isValidNumber(a) && isValidNumber(b)) {
+      setResult(parseFloat(a) + parseFloat(b));
+      setError(false);
+    } else {
+      setResult("A and B shall be numbers!");
+      setError(true);
+    }
+  }
 
   return (
     <main>
       <h1>Calculator</h1>
-
       <label>A =</label>
-      <input onKeyUp={onA} />
-
+      <input type="text" value={a} onChange={handleAChange} />
       <label>B =</label>
-      <input onKeyUp={onB} />
-
+      <input type="text" value={b} onChange={handleBChange} />
       <label>A + B =</label>
-
-      {/* When Compute buton is clicked, this input display the sum of the 2 numbers, or the error message in RED */}
-      <input disabled />
-      <button>Compute</button>
+      <input type="text" value={result} readOnly style={{ color: error ? "red" : "black" }} />
+      <button onClick={computeSum}>Compute</button>
     </main>
   );
 }
